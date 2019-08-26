@@ -3,11 +3,6 @@ const { MongoClient, ObjectID } = require('mongodb')
 const connectionURL = 'mongodb://127.0.0.1:27017'
 const databaseName = 'task-mananger'
 
-const id = new ObjectID()
-console.log(id.id.length)
-console.log(id.toHexString().length)
-
-
 MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) => {
   if (error) {
     return console.log('Unable to connect to database.')
@@ -15,44 +10,36 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
 
   const db = client.db(databaseName)
 
-  // db.collection('users').insertOne({
-  //   name: 'Vikram',
-  //   age: 26
-  // }, (error, result) => {
+  db.collection('tasks').findOne({ _id: new ObjectID("5d5f8d43ff208d7151f06dd6") }, (error, task) => {
+    if (error) { return console.log('Unable to fetch') }
+    console.log(task)
+  })
+
+  db.collection('tasks').find({ completed: false }).toArray((error, tasks) => {
+    if (error) { return console.log('Unable to fetch') }
+    console.log(tasks)
+  })
+
+  // db.collection('users').findOne({ _id: new ObjectID("5d63304560022ad1af907bd4") }, (error, user) => {
   //   if (error) {
-  //     return console.log('Unable to insert user')
+  //     return console.log('Unable to fetch')
   //   }
-
-  //   console.log(result.ops)
+  //   console.log(user)
   // })
 
-  // db.collection('users').insertMany([
-  //   {
-  //     name: 'Jen',
-  //     age: 28
-  //   }, {
-  //     name: 'Gunther',
-  //     age: 27
+  // db.collection('users').find({ name: "Doug" }).toArray((error, users) => {
+  //   if (error) {
+  //     return console.log('Unable to fetch')
   //   }
-  // ], (error, result) => {
-  //   if (error) { return console.log('Unable to insert documents') }
-    
-  //   console.log(result.ops)
+  //   console.log(users)
   // })
 
-  // db.collection('tasks').insertMany([
-  //   {
-  //     description: 'Take out the garbage',
-  //     completed: false
-  //   }, {
-  //     description: 'Walk the dog',
-  //     completed: true
-  //   }, {
-  //     description: 'Clean out the fridge',
-  //     completed: false
+  // db.collection('users').find({ name: "Doug" }).count((error, count) => {
+  //   if (error) {
+  //     return console.log('Unable to fetch')
   //   }
-  // ], (error, result) => {
-  //   if (error) { return console.log('Unable to insert documents') }
-  //   console.log(result.ops)
+  //   console.log(count)
   // })
+  
+
 })
